@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Realtime Log Viewer</title>
+    <style>
+        #log {
+            font-family: monospace;
+            white-space: pre-wrap; /* Duy trì định dạng của log */
+            background-color: #1e1e1e;
+            color: #ffffff;
+            padding: 10px;
+            border: 1px solid #ccc;
+            width: 100%;
+            height: 400px;
+            overflow-y: scroll;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Realtime Log Viewer</h1>
+<div id="log"></div>
+
+<script>
+    // Kết nối WebSocket đến backend
+    const logElement = document.getElementById("log");
+    const socket = new WebSocket("ws://localhost:2350/ws");
+
+    // Biến để lưu trữ dòng log hiện tại
+    let currentLog = "";
+
+    // Khi nhận được dữ liệu từ WebSocket, cập nhật log
+    socket.onmessage = function(event) {
+        const message = event.data;
+
+        // Cập nhật lại dòng log hiện tại thay vì thêm mới
+        currentLog = message;
+        logElement.textContent = currentLog; // Cập nhật lại toàn bộ log
+        logElement.scrollTop = logElement.scrollHeight; // Tự động cuộn xuống dưới
+    };
+
+    // Nếu kết nối WebSocket thành công
+    socket.onopen = function() {
+        console.log("Connected to WebSocket server.");
+    };
+
+    // Xử lý lỗi nếu có
+    socket.onerror = function(error) {
+        console.log("WebSocket Error: " + error);
+    };
+
+    // Xử lý khi WebSocket đóng kết nối
+    socket.onclose = function() {
+        console.log("Disconnected from WebSocket server.");
+    };
+</script>
+
+</body>
+</html>
