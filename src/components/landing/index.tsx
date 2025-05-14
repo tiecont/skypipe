@@ -96,6 +96,6 @@ const LandingPage: React.FC = () => {
             </footer>
         </div>
     );
-}
+};
 
 export default LandingPage;
