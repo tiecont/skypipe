@@ -3,11 +3,9 @@ import toast from 'react-hot-toast';
 const useToast = () => {
     const showSuccess = (message: string) => {
         toast.success(message, {
-            position: 'top-center',
+            position: 'top-right',
             duration: 3000,
-            icon: (
-                <img src='/svg/ic_checked.svg' alt='ic_checked' className='w-6 h-6' />
-            ),
+            icon: '✔',
             style: {
                 border: '1px solid #22C55E',
                 color: '##0A0A0A',
@@ -22,7 +20,7 @@ const useToast = () => {
 
     const showError = (message: string) => {
         toast.error(message, {
-            position: 'top-center',
+            position: 'top-right',
             duration: 3000,
             icon: '❗',
             style: {
@@ -39,8 +37,8 @@ const useToast = () => {
 
     const showWarning = (message: string) => {
         toast(message, {
-            icon: '⚠️',
-            position: 'top-center',
+            icon: '🔁',
+            position: 'top-right',
             duration: 3000,
             style: {
                 border: '1px solid #ffa726',

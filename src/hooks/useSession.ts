@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { getSession } from "next-auth/react";
 import {DefaultSession, Session} from "next-auth";
 
-// Define the custom user type for your session
+// Define the custom users type for your session
 interface CustomSession extends Session {
     user: DefaultSession['user'] &  {
         id: string | never;

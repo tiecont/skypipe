@@ -387,3 +387,12 @@ export const formatCount = (count: number): string => {
     }
     return count.toString();
 };
+
+
+// =========================
+// 🔍 Type Checker
+// =========================
+export function isNotificationType(type: string): boolean {
+    const validTypes = ['success', 'info', 'warning', 'error'];
+    return validTypes.includes(type);
+}

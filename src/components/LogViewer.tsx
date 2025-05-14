@@ -1,7 +1,6 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
-import { socket as sharedSocket } from '@/lib/socket';
 
 export default function LogViewer() {
     const [logs, setLogs] = useState<string[]>([]);
@@ -17,8 +16,6 @@ export default function LogViewer() {
     };
 
     useEffect(() => {
-        if (!sharedSocket) return;
-
         const handleMessage = (event: MessageEvent) => {
             const message = event.data;
 
@@ -57,28 +54,10 @@ export default function LogViewer() {
             }
         };
 
-        const handleOpen = () => {
-            setLogs(prev => [...prev, 'Connected to WebSocket server']);
-        };
-
-        const handleClose = () => {
-            setLogs(prev => [...prev, 'Disconnected from WebSocket server']);
-        };
-
-        const handleError = () => {
-            setLogs(prev => [...prev, 'WebSocket error occurred']);
-        };
-
-        sharedSocket.addEventListener('open', handleOpen);
-        sharedSocket.addEventListener('message', handleMessage);
-        sharedSocket.addEventListener('close', handleClose);
-        sharedSocket.addEventListener('error', handleError);
+        window.addEventListener('message', handleMessage);
 
         return () => {
-            sharedSocket?.removeEventListener('open', handleOpen);
-            sharedSocket?.removeEventListener('message', handleMessage);
-            sharedSocket?.removeEventListener('close', handleClose);
-            sharedSocket?.removeEventListener('error', handleError);
+            window.removeEventListener('message', handleMessage);
         };
     }, []);
 
@@ -109,7 +88,7 @@ export default function LogViewer() {
                 <div
                     key={index}
                     className={`${className} ${index === logs.length - 1 ? 'animate-pulse' : ''} py-1`}
-                    style={{ display: isInitialProgress ? 'none' : 'block' }}
+                    style={{display: isInitialProgress ? 'none' : 'block'}}
                 >
                     {cleanLog}
                 </div>
