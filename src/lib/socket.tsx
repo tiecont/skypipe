@@ -1,13 +1,13 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
-import { toast } from 'react-hot-toast';
+import useToast from "@/hooks/useToast";
+import {isNotificationType} from "@/lib/helper";
 
 export let socket: WebSocket | null = null;
 
 export default function SocketProvider() {
     const connectedRef = useRef(false);
-
     useEffect(() => {
         if (connectedRef.current || typeof window === 'undefined') return;
 
@@ -39,7 +39,9 @@ function createSocket(userId: number | null) {
             socket = new WebSocket(wsFullUrl);
 
             socket.onopen = () => {
-                displayNotification('✅ WebSocket connection established.');
+                const successConnection = new MessageEvent('message', { data: '✔ WebSocket connection established.'})
+                DisplayNotification('WebSocket connection established.', 'success');
+                window.dispatchEvent(successConnection)
             };
 
             socket.onmessage = (event) => {
@@ -47,7 +49,7 @@ function createSocket(userId: number | null) {
                     const data = JSON.parse(event.data);
 
                     if (isNotificationType(data.type)) {
-                        displayNotification(data.message);
+                        DisplayNotification(data.message, data.type);
                     }
                 } catch (err) {
                     console.warn('Fallback WebSocket message parsing failed:', err);
@@ -57,9 +59,11 @@ function createSocket(userId: number | null) {
             };
 
             socket.onclose = (event) => {
-                console.warn('❌ WebSocket closed:', event.reason || 'No reason provided');
+                const message = '🔁 Connection closed unexpectedly. Attempting to reconnect...'
+                const msg = new MessageEvent('message', { data: message });
+                DisplayNotification('Connection closed unexpectedly. Attempting to reconnect...', 'warning')
                 if (!event.wasClean) {
-                    console.log('🔁 Connection closed unexpectedly. Attempting to reconnect...');
+                    window.dispatchEvent(msg);
                     reconnect(userId);
                 }
             };
@@ -84,14 +88,19 @@ function reconnect(userId: number) {
 // =========================
 // 🔔 Display Notification
 // =========================
-function displayNotification(message: string) {
-    toast.success(message);
+export function DisplayNotification(message: string, type: string) {
+    // Check type validate
+    const { showSuccess, showError, showWarning } = useToast();
+    if (!isNotificationType(type)) return
+    switch (type) {
+        case 'error':
+            showError(message)
+            break;
+        case 'success':
+            showSuccess(message)
+            break;
+        case 'warning':
+            showWarning(message)
+    }
 }
 
-// =========================
-// 🔍 Type Checker
-// =========================
-function isNotificationType(type: string): boolean {
-    const validTypes = ['success', 'info', 'warning', 'error'];
-    return validTypes.includes(type);
-}

@@ -1,5 +1,5 @@
 {
-  "name": "frontend",
+  "name": "skypipe",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -10,23 +10,30 @@
   },
   "dependencies": {
     "@types/crypto-js": "^4.2.2",
+    "autoprefixer": "^10.4.21",
+    "clsx": "^2.1.1",
     "crypto-js": "^4.2.0",
     "date-fns": "^4.1.0",
+    "framer-motion": "^12.11.0",
+    "lucide-react": "^0.510.0",
     "next": "15.3.2",
     "next-auth": "^4.24.11",
+    "postcss": "^8.5.3",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "react-hot-toast": "^2.5.2"
+    "react-hot-toast": "^2.5.2",
+    "tailwind-merge": "^3.3.0",
+    "tailwindcss-animate": "^1.0.7"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
-    "@tailwindcss/postcss": "^4",
+    "@tailwindcss/postcss": "^4.1.6",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "15.3.2",
-    "tailwindcss": "^4",
+    "tailwindcss": "^4.1.6",
     "typescript": "^5"
   }
 }
