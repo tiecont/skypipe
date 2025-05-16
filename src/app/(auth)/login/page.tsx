@@ -1,4 +1,5 @@
 import { Metadata } from 'next';
+import RegisterForm from "@/components/auth/register";
 
 export async function generateMetadata(): Promise<Metadata> {
     return {
@@ -7,7 +8,7 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 const Login = () => {
-    return "Sign In Page";
+    return <RegisterForm />;
 };
 
 export default Login;

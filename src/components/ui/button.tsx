@@ -2,7 +2,17 @@ import * as React from "react";
 import { cn } from "@/lib/utils";
 import Loading from "@/components/ui/loading";
 
+const buttonVariants = {
+    primary: "bg-primary text-white hover:bg-primary-dark",
+    secondary: "bg-secondary text-white hover:bg-secondary-dark",
+    outline: "border border-input bg-transparent hover:bg-accent hover:text-accent-foreground",
+    ghost: "hover:bg-accent hover:text-accent-foreground",
+    link: "text-primary underline-offset-4 hover:underline",
+    destructive: "bg-destructive text-destructive-foreground hover:bg-destructive/90",
+} as const;
+
 export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+    variant?: keyof typeof buttonVariants;
     isLoading?: boolean;
     icon?: string;
     wIc?: number;
@@ -18,6 +28,7 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         {
             className,
             children,
+            variant = "primary",
             isLoading = false,
             icon,
             iconAlt = "icon",
@@ -37,6 +48,7 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
                 type={type}
                 className={cn(
                     "inline-flex items-center justify-center px-4 py-2 rounded-md transition-colors focus:outline-none disabled:opacity-50 disabled:pointer-events-none",
+                    buttonVariants[variant],
                     className
                 )}
                 disabled={isLoading || disabled}
@@ -53,14 +65,10 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
                                 width={wIc}
                                 height={hIc}
                                 alt={iconAlt}
-                                className={iconClassName}
+                                className={cn(iconClassName, { "mr-2": children })}
                             />
                         )}
-                        {children && (
-                            <span className="ml-2">
-                {children}
-              </span>
-                        )}
+                        {children}
                     </>
                 )}
             </button>
