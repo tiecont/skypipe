@@ -4,4 +4,6 @@ export const ROUTES = {
 
     AUTH: '/auth',
     AUTH_SIGNIN: '/login',
+    AUTH_SIGN_UP: '/register',
+    AUTH_VERIFY_LOGIN: '/verify-login',
 }

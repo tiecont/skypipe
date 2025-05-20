@@ -21,6 +21,7 @@ export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElemen
     iconClassName?: string;
     loadingSize?: number;
     loadingColor?: string;
+    text?: string;
 }
 
 export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
@@ -28,6 +29,7 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         {
             className,
             children,
+            text,
             variant = "primary",
             isLoading = false,
             icon,
@@ -47,7 +49,7 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
             <button
                 type={type}
                 className={cn(
-                    "inline-flex items-center justify-center px-4 py-2 rounded-md transition-colors focus:outline-none disabled:opacity-50 disabled:pointer-events-none",
+                    "inline-flex items-center justify-center px-4 py-2 rounded-md transition-colors focus:outline-none disabled:opacity-50 disabled:pointer-events-none text-white hover:cursor-pointer",
                     buttonVariants[variant],
                     className
                 )}
@@ -71,6 +73,7 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
                         {children}
                     </>
                 )}
+                {text}
             </button>
         );
     }

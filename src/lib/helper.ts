@@ -51,12 +51,12 @@ export const formatUDID = (
 
 export const getStatusColor = (status: string) => {
     switch (status) {
-        case 'Đang chờ':
-            return 'text-red-500 bg-bg-error'; // Màu đỏ cho trạng thái "Đang chờ"
-        case 'Hoàn thành':
-            return 'text-green-500 bg-bg-success'; // Màu xanh cho trạng thái "Hoàn thành"
+        case 'waiting':
+            return 'text-red-500 bg-bg-error';
+        case 'completed':
+            return 'text-green-500 bg-bg-success';
         default:
-            return 'text-gray-500 bg-success'; // Màu xám cho các trạng thái khác
+            return 'text-gray-500 bg-success';
     }
 };
 
@@ -130,36 +130,6 @@ export const expiryDate = (days: number) => {
 
 export const DAY_COOKIE_EXPIRY = 1;
 export const MONTH_COOKIE_EXPIRY = 30;
-
-export const saveInfoUser = async (email: string, password: string) => {
-    const loginInfo = {
-        email: email,
-        password: password,
-    };
-
-    // Mã hóa thông tin trước khi lưu
-    const encryptInfoUser: string = encryptData(JSON.stringify(loginInfo));
-
-    setToLocalStorage(KEY_COOKIES.SAVE_INFO, encryptInfoUser);
-};
-
-export const deleteSaveInfoUser = async () => {
-    deleteFromLocalStorage(KEY_COOKIES.SAVE_INFO);
-};
-
-export const getInfoSaved = () => {
-    try {
-        const info = getFromLocalStorage(KEY_COOKIES.SAVE_INFO);
-        if (info && info != '') {
-            const encryptInfoUser = decryptData(info);
-            return JSON.parse(encryptInfoUser);
-        }
-
-        return null;
-    } catch {
-        return null;
-    }
-};
 
 export const formatCurrencyVND = (amount: number) => {
     return new Intl.NumberFormat('vi-VN', {
@@ -338,10 +308,9 @@ export function getRemainingTime(appleReviewEndTime: string): {
         return { days: '00', hours: '00', minutes: '00' };
     }
 
-    const endTime = new Date(appleReviewEndTime); // Chuyển đổi chuỗi thành đối tượng Date
-    const currentTime = new Date(); // Thời gian hiện tại
+    const endTime = new Date(appleReviewEndTime);
+    const currentTime = new Date();
 
-    // Tính toán chênh lệch thời gian
     const timeDiff = endTime.getTime() - currentTime.getTime();
 
     if (timeDiff < 0) {
@@ -355,12 +324,10 @@ export function getRemainingTime(appleReviewEndTime: string): {
     );
     const minutes = Math.floor((timeDiff % (1000 * 60 * 60)) / (1000 * 60));
 
-    // Đảm bảo các giá trị luôn có hai chữ số
     const formattedDays = String(days).padStart(2, '0');
     const formattedHours = String(hours).padStart(2, '0');
     const formattedMinutes = String(minutes).padStart(2, '0');
 
-    // Trả về chuỗi thời gian còn lại
     return {
         days: formattedDays,
         hours: formattedHours,

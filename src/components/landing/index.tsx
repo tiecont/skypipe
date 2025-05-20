@@ -1,13 +1,14 @@
 'use client';
 
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { useRouter } from "@/animation-router/patch-router/router";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { CheckCircle, Moon, Sun } from "lucide-react";
-import { ROUTES } from "@/lib/constants/routes.contants";
-import {getFromLocalStorage, setToLocalStorage} from "@/lib/helper";
+import { CheckCircle } from "lucide-react";
+import { ROUTES } from "@/lib/constants/routes.constants";
+import Header from "@/components/header/index";
+import {useTheme} from "@/context/ThemeContext";
 
 const features: string[] = [
     "Automatic GitHub Integration",
@@ -22,28 +23,7 @@ const MotionH2 = motion<'h2'>('h2');
 
 const LandingPage: React.FC = () => {
     const router = useRouter();
-    const [theme, setTheme] = useState<'light' | 'dark'>('light');
-
-    useEffect(() => {
-        // Check for saved theme preference or system preference
-        const savedTheme = getFromLocalStorage("theme");
-        const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-
-        const initialTheme = savedTheme
-            ? savedTheme as 'light' | 'dark'
-            : systemPrefersDark ? 'dark' : 'light';
-
-        setTheme(initialTheme);
-        document.documentElement.classList.toggle('dark', initialTheme === 'dark');
-    }, []);
-
-    const toggleTheme = (): void => {
-        const newTheme = theme === 'light' ? 'dark' : 'light';
-        setTheme(newTheme);
-        setToLocalStorage("theme", newTheme);
-        document.documentElement.classList.toggle('dark', newTheme === 'dark');
-    };
-
+    const { theme } = useTheme()
     const handleClickStart = (): void => {
         router.push(ROUTES.AUTH_SIGNIN);
     };
@@ -52,44 +32,9 @@ const LandingPage: React.FC = () => {
         <div className={`min-h-screen transition-colors duration-300 ${
             theme === 'dark'
                 ? 'bg-surface-dark text-white'
-                : 'bg-surface-base text-text'
+                : 'bg-surface-base'
         }`}>
-            {/* Header */}
-            <header className={`px-6 py-4 flex justify-between items-center shadow-md transition-colors duration-300 ${
-                theme === 'dark' ? 'bg-surface-dark' : 'bg-primary-DEFAULT'
-            }`}>
-                <h1 className="text-2xl font-bold text-primary">Skypipe</h1>
-                <nav className="flex items-center space-x-6">
-                    <a href="#features" className="hover:text-primary-dark dark:hover:text-primary transition-colors">
-                        Features
-                    </a>
-                    <a href="#pricing" className="hover:text-primary-dark dark:hover:text-primary transition-colors">
-                        Pricing
-                    </a>
-                    <a href="#login" className="hover:text-primary-dark dark:hover:text-primary transition-colors">
-                        Login
-                    </a>
-                    <Button
-                        className="bg-primary text-white hover:bg-primary-dark rounded-xl transition-colors"
-                        onClick={handleClickStart}
-                    >
-                        Get Started
-                    </Button>
-                    <Button
-                        onClick={toggleTheme}
-                        className="ml-2"
-                        aria-label="Toggle theme"
-                        variant="ghost"
-                    >
-                        {theme === 'dark' ? (
-                            <Sun className="w-5 h-5 text-yellow-300" />
-                        ) : (
-                            <Moon className="w-5 h-5 text-gray-700" />
-                        )}
-                    </Button>
-                </nav>
-            </header>
-
+            <Header />
             {/* Hero Section */}
             <section className={`px-6 py-20 text-center transition-colors duration-300 ${
                 theme === 'dark' ? 'bg-surface-dark' : 'bg-surface-muted'

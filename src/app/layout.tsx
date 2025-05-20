@@ -6,6 +6,7 @@ import {AuthProvider} from "@/hooks/authContext";
 import {Toaster} from "react-hot-toast";
 import SocketProvider from "@/lib/socket";
 import {HandleOnComplete} from "@/animation-router";
+import {ThemeProvider} from "@/context/ThemeContext";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -41,7 +42,9 @@ export default function RootLayout({
       />
       <AuthProvider>
           <SocketProvider />
-          {children}
+          <ThemeProvider>
+            {children}
+          </ThemeProvider>
       </AuthProvider>
       </body>
     </html>

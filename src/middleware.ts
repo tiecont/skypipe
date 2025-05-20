@@ -1,8 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { KEY_COOKIES } from './lib/constants/auth.constants';
-import { ROUTES } from './lib/constants/routes.contants';
+import { ROUTES } from './lib/constants/routes.constants';
 
-const PUBLIC_AUTH_ROUTES = [ROUTES.AUTH_SIGNIN];
+const PUBLIC_AUTH_ROUTES = [
+    ROUTES.AUTH_SIGNIN,
+    ROUTES.AUTH_SIGN_UP
+];
 
 const setLocaleCookieIfMissing = (request: NextRequest, response: NextResponse) => {
     const hasLocale = request.cookies.has(KEY_COOKIES.LOCALE);

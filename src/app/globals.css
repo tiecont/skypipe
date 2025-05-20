@@ -1,49 +1,53 @@
 @import "tailwindcss";
 
-/* 🎨 Theme Colors & Fonts */
-@layer base {
+/* 🎨 Custom Theme Variables - Tailwind v4 */
+@theme {
+  --color-primary-DEFAULT: #2F80ED;
+  --color-primary-light: #56CCF2;
+  --color-primary-dark: #1C58D9;
+
+  --color-accent-success: #27AE60;
+  --color-accent-warning: #F2C94C;
+  --color-accent-danger:  #EB5757;
+  --color-accent-info:    #2D9CDB;
+
+  --color-surface-base:  #F9FAFB;
+  --color-surface-muted: #F2F4F8;
+  --color-surface-dark:  #1E1E2F;
+
+  --color-text-DEFAULT: #333333;
+  --color-text-muted:   #828282;
+
+  --color-border: #E0E0E0;
+  --color-border-dark: #BDBDBD;
+
+  --font-script: Great Vibes, cursive;
+
+  --animation-fade-in: fadeIn 0.4s ease-out forwards;
+  --animation-slide-up: slideUp 0.3s ease-out forwards;
+  --animation-success-pulse: successPulse 1.5s ease-in-out infinite;
+
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+/* 🌙 Dark mode support */
+@media (prefers-color-scheme: dark) {
   :root {
-    --color-primary-DEFAULT: #3b82f6;
-    --color-primary-light: #93c5fd;
-    --color-primary-dark: #1d4ed8;
-    --color-primary-lightest: #eff6ff;
-
-    --color-accent-success: #10b981;
-    --color-accent-success-dark: #059669;
-    --color-accent-warning: #f59e0b;
-    --color-accent-danger: #ef4444;
-    --color-accent-info: #3b82f6;
-
-    --color-surface-base: #ffffff;
-    --color-surface-muted: #f9fafb;
-    --color-surface-dark: #1f2937;
-
-    --color-text-DEFAULT: #111827;
-    --color-text-muted: #6b7280;
-    --color-text-light: #f9fafb;
-
-    --color-border: #e5e7eb;
-    --color-border-dark: #d1d5db;
-
-    --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
-    --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
-    --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
-  }
-
-  .dark {
-    --color-surface-base: #1f2937;
-    --color-surface-muted: #111827;
-    --color-surface-dark: #030712;
-
-    --color-text-DEFAULT: #f9fafb;
-    --color-text-muted: #9ca3af;
-
-    --color-border: #374151;
-    --color-border-dark: #4b5563;
+    --background: #0a0a0a;
+    --foreground: #ededed;
   }
 }
 
-/* ✨ Animations */
+/* 🎞️ Animations (tailwind v4 compliant) */
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(8px); }
   to { opacity: 1; transform: translateY(0); }
@@ -54,89 +58,130 @@
   to { opacity: 1; transform: translateY(0); }
 }
 
-@keyframes pulse {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.8; }
-}
-
 @keyframes successPulse {
   0%, 100% {
     transform: scale(1);
-    box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.4);
+    box-shadow: 0 0 0 0 rgba(39, 174, 96, 0.4);
   }
   70% {
     transform: scale(1.05);
-    box-shadow: 0 0 0 10px rgba(16, 185, 129, 0);
+    box-shadow: 0 0 0 10px rgba(39, 174, 96, 0);
   }
-}
-
-/* 📦 Form Components */
-@layer components {
-  .formWrapper {
-    animation: fadeIn 0.4s ease-out forwards;
-  }
-
-  .inputField {
-    @apply w-full mt-1 px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[--color-primary-light] focus:border-[--color-primary-light] transition;
-    @apply bg-[--color-surface-base] text-[--color-text-DEFAULT] border-[--color-border];
-    box-shadow: var(--shadow-sm);
-    animation: slideUp 0.3s ease-out forwards;
-  }
-
-  .inputField::placeholder {
-    @apply text-[--color-text-muted] opacity-70;
-  }
-
-  .fieldGroup {
-    @apply mb-5;
-    animation: fadeIn 0.3s ease-out forwards;
-  }
-
-  .animate-fade-in {
-    animation: fadeIn 0.4s ease-out forwards;
-  }
-
-  /* Buttons */
-  .btn-primary {
-    @apply px-6 py-2 bg-[--color-primary-DEFAULT] text-white rounded-lg hover:bg-[--color-primary-dark] transition;
-    @apply flex items-center gap-2 shadow-md hover:shadow-lg;
-  }
-
-  .btn-secondary {
-    @apply px-6 py-2 bg-[--color-surface-muted] text-[--color-text-DEFAULT] rounded-lg hover:bg-[--color-border] transition;
-    @apply flex items-center gap-2 shadow-sm hover:shadow-md;
-  }
-
-  /* Success state */
-  .success-circle {
-    animation: successPulse 1.5s ease-in-out infinite;
-  }
-}
-
-/* 🖱 Custom Scrollbars */
-::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
-}
-::-webkit-scrollbar-track {
-  @apply bg-[--color-surface-muted] rounded-full;
-}
-::-webkit-scrollbar-thumb {
-  @apply bg-[--color-border-dark] rounded-full;
-}
-::-webkit-scrollbar-thumb:hover {
-  @apply bg-[--color-text-muted];
 }
 
 /* 🧩 Base Styles */
 body {
-  @apply bg-[--color-surface-muted] text-[--color-text-DEFAULT] transition-colors;
+  background: var(--background, var(--color-surface-muted));
+  color: var(--foreground, var(--color-text-DEFAULT));
   font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-/* Smooth transitions for dark mode */
-@media (prefers-reduced-motion: no-preference) {
-  :root, .dark {
-    transition: background-color 0.3s ease, color 0.3s ease;
-  }
+/* 📦 Components (pure CSS in Tailwind v4) */
+.formWrapper {
+  border-radius: 0.5rem;
+  padding: 1.5rem;
+  animation: var(--animation-fade-in);
+  box-shadow: var(--shadow-md);
+}
+
+.inputField {
+  width: 100%;
+  margin-top: 0.25rem;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid var(--color-border);
+  border-radius: 0.5rem;
+  background-color: var(--color-surface-base);
+  color: var(--color-text-DEFAULT);
+  transition: border-color 0.2s, box-shadow 0.2s;
+  animation: var(--animation-slide-up);
+}
+
+.border-danger {
+  border: 1px solid var(--color-accent-danger);
+}
+.inputField:focus {
+  outline: none;
+  border-color: var(--color-primary-light);
+  box-shadow: 0 0 0 2px var(--color-primary-light);
+}
+
+.inputField::placeholder {
+  color: var(--color-text-muted);
+  opacity: 0.7;
+}
+
+.fieldGroup {
+  margin-bottom: 1.25rem;
+  animation: var(--animation-fade-in);
+}
+
+/* 🎯 Buttons */
+.btn-primary {
+  background-color: var(--color-primary-DEFAULT);
+  color: white;
+  padding: 0.5rem 1.5rem;
+  border-radius: 0.5rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  box-shadow: var(--shadow-md);
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.btn-primary:hover {
+  background-color: var(--color-primary-dark);
+  box-shadow: var(--shadow-lg);
+}
+
+.btn-secondary {
+  background-color: var(--color-surface-muted);
+  color: var(--color-text-DEFAULT);
+  padding: 0.5rem 1.5rem;
+  border-radius: 0.5rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  box-shadow: var(--shadow-sm);
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.btn-secondary:hover {
+  background-color: var(--color-border);
+  box-shadow: var(--shadow-md);
+}
+
+/* ✅ Success Animation */
+.success-circle {
+  animation: var(--animation-success-pulse);
+}
+
+.successBox {
+  background-color: var(--color-accent-success);
+  color: white;
+  font-weight: bold;
+  padding: 0.75rem 1.25rem;
+  border-radius: 0.5rem;
+  text-align: center;
+  animation: var(--animation-success-pulse);
+}
+
+/* 🖱 Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background-color: var(--color-surface-muted);
+  border-radius: 1rem;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: var(--color-border-dark);
+  border-radius: 1rem;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: var(--color-text-muted);
 }

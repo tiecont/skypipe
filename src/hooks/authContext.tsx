@@ -46,12 +46,14 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
             setIsAuthenticated(true);
         }
 
-        if (dataUser) {
-            const encryptInfoUser = decryptData(dataUser);
-            const parseInfoUser = JSON.parse(encryptInfoUser);
-            setUser(parseInfoUser);
-            return dataUser
-        }
+        // Need to change after full user data
+        console.log(KEY_COOKIES.USER, dataUser)
+        // if (dataUser) {
+        //     const encryptInfoUser = decryptData(dataUser);
+        //     const parseInfoUser = JSON.parse(encryptInfoUser);
+        //     setUser(parseInfoUser);
+        //     return dataUser
+        // }
     }, []);
 
     const setInfoUser = React.useCallback(() => {
