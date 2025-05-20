@@ -46,14 +46,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
             setIsAuthenticated(true);
         }
 
-        // Need to change after full user data
-        console.log(KEY_COOKIES.USER, dataUser)
-        // if (dataUser) {
-        //     const encryptInfoUser = decryptData(dataUser);
-        //     const parseInfoUser = JSON.parse(encryptInfoUser);
-        //     setUser(parseInfoUser);
-        //     return dataUser
-        // }
+        if (dataUser) {
+            const encryptInfoUser = decryptData(dataUser);
+            const parseInfoUser = JSON.parse(encryptInfoUser);
+            setUser(parseInfoUser);
+            return dataUser
+        }
     }, []);
 
     const setInfoUser = React.useCallback(() => {
@@ -74,6 +72,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         deleteClientCookie(KEY_COOKIES.TOKEN);
         deleteClientCookie(KEY_COOKIES.REFRESH_TOKEN);
         deleteClientCookie(KEY_COOKIES.USER);
+        deleteClientCookie(KEY_COOKIES.USER_ID)
         setIsAuthenticated(false);
         setUser(null);
     }, []);

@@ -11,12 +11,19 @@ export function getClientCookie(key: string): string | null {
     return null;
 }
 
-export function setClientCookie(name: string, value: string, days?: number) {
+export function setClientCookie(
+    name: string,
+    value: string,
+    options?: { days?: number; minutes?: number }
+) {
     if (typeof window !== 'undefined') {
         let expires = '';
-        if (days) {
+        if (options?.days || options?.minutes) {
             const date = new Date();
-            date.setTime(date.getTime() + days * 24 * 60 * 60 * 1000);
+            const totalMs =
+                (options.days || 0) * 24 * 60 * 60 * 1000 +
+                (options.minutes || 0) * 60 * 1000;
+            date.setTime(date.getTime() + totalMs);
             expires = '; expires=' + date.toUTCString();
         }
         document.cookie = name + '=' + (value || '') + expires + '; path=/';

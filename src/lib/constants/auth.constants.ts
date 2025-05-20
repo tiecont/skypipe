@@ -17,8 +17,10 @@ export const AUTH_ERROR_MAPPINGS = {
 // # Mã hóa tất cả các giá trị bằng base64
 export const KEY_COOKIES = {
     TOKEN: 'VE9LRU4U',
+    OTP_TOKEN: 'T1RQX1RPS0VOCg',
     REFRESH_TOKEN: 'VA2LRU5E',
     USER: 'VVNFUggV',
     LOCALE: 'TE9DQUxF',
     SAVE_INFO: 'U0FWRV9JTkZP',
+    USER_ID: 'VVNFUl9JRAo'
 };

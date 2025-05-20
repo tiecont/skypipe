@@ -17,6 +17,8 @@ export interface ILogin {
 }
 
 export interface IVerifyLogin {
+    token: string | null;
+    user_id: string | null;
     email: string;
     code: string;
 }

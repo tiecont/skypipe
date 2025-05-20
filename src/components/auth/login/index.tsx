@@ -9,11 +9,17 @@ import {ROUTES} from "@/lib/constants/routes.constants";
 import axios, {AxiosResponse} from "axios";
 import {login} from "@/services/axios";
 import {ILogin} from "@/lib/models/auth.model";
-import {deleteClientCookie} from "@/lib/cookies.client";
+import {deleteClientCookie, setClientCookie} from "@/lib/cookies.client";
 import {KEY_COOKIES} from "@/lib/constants/auth.constants";
 import { setToLocalStorage} from "@/lib/helper";
 import useToast from "@/hooks/useToast";
+import {IServerResponse} from "@/lib/models/response.model";
 
+interface T {
+    token: string;
+    user_id: string;
+    email: string;
+}
 export default function LoginForm() {
     const [form, setForm] = useState<ILogin>({
         email: "",
@@ -59,12 +65,13 @@ export default function LoginForm() {
         setIsLoading(true);
         try {
             const response: AxiosResponse = await login(form)
-            const res = response.data
-            const email: string = res.data?.data
+            const res: IServerResponse<T> = response.data
             if (res.status?.code === 200) {
-                setToLocalStorage("email", email)
+                setToLocalStorage("email", res.data.email);
+                setClientCookie(KEY_COOKIES.OTP_TOKEN, res.data.token, { minutes: 3 })
+                setClientCookie(KEY_COOKIES.USER_ID, res.data.user_id, { minutes: 3 })
                 showSuccess(res.status?.message || "We just send to you an email verification code. Redirecting...");
-                router.push(`${ROUTES.AUTH_VERIFY_LOGIN}?email=${email}`)
+                router.push(`${ROUTES.AUTH_VERIFY_LOGIN}?email=${res.data.email}`);
             }
             if (res.status?.code === 401) {
                 deleteClientCookie(KEY_COOKIES.USER)

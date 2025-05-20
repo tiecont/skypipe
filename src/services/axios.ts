@@ -3,7 +3,8 @@ import {API} from "@/lib/constants/api.constants";
 import {ILogin, IRegister, IVerifyLogin} from "@/lib/models/auth.model";
 
 const axiosInstance = createAxiosInstance()
+const getInfoUser = () => axiosInstance.get(API.GET_USER_INFO)
 const login = (data: ILogin) => axiosInstance.post(API.LOGIN, data);
 const register = (data: IRegister) => axiosInstance.post(API.REGISTER, data);
 const verifyLogin = (data: IVerifyLogin) => axiosInstance.post(API.VERIFY_LOGIN, data)
-export { login, register, verifyLogin };
+export { login, register, verifyLogin, getInfoUser };

@@ -1,19 +1,24 @@
-import {useRef, useState} from "react";
+'use client';
+import { useEffect, useRef, useState } from "react";
 import Button from "@/components/ui/button";
+import { useTheme } from "@/context/ThemeContext";
 
 interface OTPInputProps {
     onSubmit: (otpValue: string) => void;
     isLoading: boolean;
 }
+
 const OTPInput: React.FC<OTPInputProps> = ({ onSubmit, isLoading }) => {
     const [otp, setOtp] = useState<string[]>(Array(6).fill(""));
     const inputsRef = useRef<HTMLInputElement[]>([]);
+    const { theme } = useTheme();
 
     const handleChange = (value: string, index: number) => {
         if (!/^\d*$/.test(value)) return;
         const newOtp = [...otp];
         newOtp[index] = value;
         setOtp(newOtp);
+
         if (value && index < 5) {
             inputsRef.current[index + 1]?.focus();
         }
@@ -41,9 +46,23 @@ const OTPInput: React.FC<OTPInputProps> = ({ onSubmit, isLoading }) => {
         onSubmit(otp.join(""));
     };
 
+    const handleResend = () => {
+        console.log("Resend OTP");
+        // Optionally reset OTP if needed:
+        // setOtp(Array(6).fill(""));
+    };
+
+    // Auto submit when all 6 digits are filled
+    useEffect(() => {
+        if (otp.every((digit) => digit !== "")) {
+            onSubmit(otp.join(""));
+        }
+    }, [otp]);
+
     return (
-        <form onSubmit={handleSubmit} className="w-full p-4">
-            <p className="text-base text-white">We have sent the verification code to your email address</p>
+        <form onSubmit={handleSubmit} className={`w-full rounded-xl shadow-lg border p-8 
+            ${theme === "dark" ? "bg-surface-dark" : "bg-surface-base"}`}>
+            <p>We have sent the verification code to your email address</p>
             <div className="flex justify-between gap-2 mt-10" onPaste={handlePaste}>
                 {otp.map((digit, index) => (
                     <input
@@ -56,17 +75,26 @@ const OTPInput: React.FC<OTPInputProps> = ({ onSubmit, isLoading }) => {
                         ref={(el) => {
                             if (el) inputsRef.current[index] = el;
                         }}
-                        className="w-[48px] h-[55px] text-center text-2xl font-semibold border border-border-primary rounded-xl bg-gray-subtle placeholder-placeholder focus:outline-none focus:ring-2 focus:ring-border-primary"
+                        className="w-[48px] h-[55px] text-center text-2xl font-semibold border border-border-primary rounded-xl placeholder-placeholder focus:outline-none focus:ring-2 focus:ring-border-primary"
                     />
                 ))}
             </div>
-            <Button
-                isLoading={isLoading}
-                text="Submit"
-                className="w-full bg-primary-DEFAULT mt-6"
-                loadingColor="#ffffff"
-                type="submit"
-            />
+            <div className="flex gap-4 mt-6">
+                <Button
+                    isLoading={isLoading}
+                    text="Submit"
+                    className="w-full bg-primary-DEFAULT"
+                    loadingColor="#ffffff"
+                    type="submit"
+                />
+                <Button
+                    isLoading={false}
+                    text="Resend"
+                    className="bg-secondary text-white"
+                    type="button"
+                    onClick={handleResend}
+                />
+            </div>
         </form>
     );
 };

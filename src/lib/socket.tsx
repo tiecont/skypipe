@@ -11,7 +11,7 @@ export default function SocketProvider() {
     useEffect(() => {
         if (connectedRef.current || typeof window === 'undefined') return;
 
-        const fakeUserId = 1;
+        const fakeUserId = "7d423b73-4edb-4fdd-b062-1a8169b37030";
         connectedRef.current = true;
         createSocket(fakeUserId);
     }, []);
@@ -22,7 +22,7 @@ export default function SocketProvider() {
 // =========================
 // 🔁 WebSocket Core Logic
 // =========================
-function createSocket(userId: number | null) {
+function createSocket(userId: string | null) {
     if (!userId) {
         console.warn('No userId provided, skipping WebSocket connection.');
         return;
@@ -78,7 +78,7 @@ function createSocket(userId: number | null) {
     }
 }
 
-function reconnect(userId: number) {
+function reconnect(userId: string) {
     setTimeout(() => {
         console.log('🔄 Reconnecting WebSocket...');
         createSocket(userId);

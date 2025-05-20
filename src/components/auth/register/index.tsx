@@ -14,6 +14,7 @@ import {setClientCookie} from "@/lib/cookies.client";
 import useToast from "@/hooks/useToast";
 import { IRegister } from "@/lib/models/auth.model";
 import {KEY_COOKIES} from "@/lib/constants/auth.constants";
+import {IServerResponse} from "@/lib/models/response.model";
 
 
 // Constants
@@ -77,6 +78,9 @@ const plans: Plan[] = [
 
 const genderOptions = ["Male", "Female", "Other", "Prefer not to say"];
 
+interface T {
+    userId: string
+}
 export default function RegisterForm() {
     const [form, setForm] = useState<IRegister>(initialForm);
     const [phase, setPhase] = useState(1);
@@ -157,10 +161,13 @@ export default function RegisterForm() {
         setIsLoading(true);
         try {
             const response: AxiosResponse = await register(form)
-            const res = response.data;
+            const res: IServerResponse<T> = response.data;
             if (res?.status?.code === 201) {
-                setClientCookie(KEY_COOKIES.USER, res.data.user_id, 7);
-                showSuccess(res?.data?.message || "Registration successful");
+                setClientCookie(KEY_COOKIES.USER_ID, res.data.userId, { days: 1 });
+                showSuccess(res?.status?.message || "Registration successful, redirecting...");
+                setTimeout(() => {
+                    router.push(ROUTES.AUTH_SIGNIN)
+                }, 5000)
             }
             setSubmitted(true);
         } catch (error) {
@@ -397,7 +404,7 @@ const PlanCard = ({
     );
 };
 
-const SuccessMessage = ({
+export const SuccessMessage = ({
                             form,
                             onReset
                         }: {
